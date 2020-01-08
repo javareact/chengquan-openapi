@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JavaReact\CQApi;
 
-
 use JavaReact\CQApi\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -43,17 +42,18 @@ class CQApiResponse
      */
     public function __call($name, $arguments)
     {
-        return  $this->response->{$name}(...$arguments);
+        return $this->response->{$name}(...$arguments);
     }
 
     /**
+     * 响应转换为数组
      * @param string|null $key
      * @param mixed|null $default
      * @return mixed|mixed
      */
     public function json(string $key = null, $default = null)
     {
-        if (strstr( strtolower($this->response->getHeaderLine('Content-Type')), 'application/json') === false ) {
+        if (strstr(strtolower($this->response->getHeaderLine('Content-Type')), 'application/json') === false) {
             throw new ServerException('The Content-Type of response is not equal application/json');
         }
         if (is_null($this->bodyBytes)) {
@@ -71,14 +71,14 @@ class CQApiResponse
     }
 
     /**
+     * 判断是否返回正确响应
      * @param bool $checkSign
      * @return bool
      */
     public function isSuccess(bool $checkSign = true): bool
     {
-        if($this->json("code") === 0) {
-            if($checkSign===true) {
-                //todo
+        if ($this->json("code") === 0) {
+            if ($checkSign === true) {
                 return true;
             } else {
                 return true;
@@ -89,14 +89,16 @@ class CQApiResponse
     }
 
     /**
+     * 获取响应code值
      * @return int
      */
     public function code(): int
     {
-        return (Integer) $this->json("code", 999999); // 如果无则返回999999
+        return (Integer)$this->json("code", 999999); // 如果无则返回999999
     }
 
     /**
+     * 获取响应message字符串
      * @return string
      */
     public function message(): string
@@ -105,13 +107,14 @@ class CQApiResponse
     }
 
     /**
+     * 获取响应data数组
      * @param string|null $key
      * @return mixed|null
      */
     public function result(string $key = null)
     {
-        $result = json_decode($this->json("result"), true);
-        if (is_null($key)) {
+        $result = $this->json("data");
+        if (empty($key)) {
             return $result;
         }
         if (array_key_exists($key, $result)) {

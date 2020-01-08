@@ -6,6 +6,7 @@ namespace JavaReact\CQApi;
 
 use Closure;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
 use JavaReact\CQApi\Exception\ClientException;
 use JavaReact\CQApi\Exception\ServerException;
@@ -14,65 +15,18 @@ use Psr\Log\NullLogger;
 
 abstract class Client
 {
-    /**
-     * @var string
-     */
-    const DEFAULT_VERSION = "2.0";
-
-    /**
-     * @var string
-     */
-    const DEFAULT_FORMAT = "json";
-
-    /**
-     * @var string
-     */
-    const DEFAULT_CHARSET = "utf-8";
-
-    /**
-     * @var string
-     */
-    const DEFAULT_SIGN_TYPE = "md5";
-
-    /**
-     * @var string
-     */
-    const DEFAULT_APP_AUTH_TOKEN = "";
+    /** @var string */
+    const DEFAULT_GATEWAY = 'https://api.chengquan.cn/';
 
     /**
      * @vars string
      */
+    protected $appId;
+
+    /**
+     * @var string
+     */
     protected $appKey;
-
-    /**
-     * @var string
-     */
-    protected $secret;
-
-    /**
-     * @var string
-     */
-    protected $version = self::DEFAULT_VERSION;
-
-    /**
-     * @var string
-     */
-    protected $format = self::DEFAULT_FORMAT;
-
-    /**
-     * @var string
-     */
-    protected $charset = self::DEFAULT_CHARSET;
-
-    /**
-     * @var string
-     */
-    protected $signType = self::DEFAULT_SIGN_TYPE;
-
-    /**
-     * @var string
-     */
-    protected $appAuthToken = self::DEFAULT_APP_AUTH_TOKEN;
 
     /**
      * @var Closure
@@ -86,68 +40,51 @@ abstract class Client
 
     /**
      * Client constructor.
-     * @param string $appKey
-     * @param string $secret
+     * @param string $app_id
+     * @param string $app_key
      * @param Closure $clientFactory
      * @param LoggerInterface|null $logger
      */
-    public function __construct(string $appKey, string $secret, Closure $clientFactory, LoggerInterface $logger = null)
+    public function __construct(string $app_id, string $app_key, Closure $clientFactory, LoggerInterface $logger = null)
     {
-        $this->appKey        = $appKey;
-        $this->secret        = $secret;
+        $this->appId         = $app_id;
+        $this->appKey        = $app_key;
         $this->clientFactory = $clientFactory;
         $this->logger        = $logger ?? new NullLogger();
     }
 
     /**
-     * @param string $token
-     */
-    public function setAppAuthToken(string $token): void
-    {
-        $this->appAuthToken = $token;
-    }
-
-    /**
-     * @param array $options
-     * @param array $availableOptions
-     * @return array
-     */
-    protected function resolveOptions(array $options, array $availableOptions): array
-    {
-        return array_intersect_key($options, array_flip($availableOptions));
-    }
-
-    /**
-     * @param string $method
+     * 发送请求
      * @param string $apiURI
-     * @param array $options
+     * @param array $parameters
+     * @param string $method
      * @return CQApiResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function request(string $method, string $apiURI, array $options = []): CQApiResponse
+    protected function request(string $apiURI, array $parameters = []): CQApiResponse
     {
-        $this->logger->debug(sprintf("CQApi Request [%s] %s", strtoupper($method), $apiURI));
+        $this->logger->debug(sprintf("CQApi Request [%s] %s", 'GET', $apiURI));
         try {
             $clientFactory = $this->clientFactory;
-            $client        = $clientFactory($options);
+            /** @var ClientInterface $client */
+            $client = $clientFactory();
             if (!$client instanceof ClientInterface) {
                 throw new ClientException(sprintf('The client factory should create a %s instance.', ClientInterface::class));
             }
-            $parameters      = [
-                "app_key"        => $this->appKey,
-                "timestamp"      => date("Y-m-d H:i:s", time()),
-                "version"        => $this->version,
-                "format"         => $this->format,
-                "charset"        => $this->charset,
-                "sign_type"      => $this->signType,
-                "app_auth_token" => $this->appAuthToken,
-                "biz_content"    => json_encode($options["json"]),
-            ];
-            $options["json"] = array_merge([
+            if (empty($client->getConfig('base_uri'))) {
+                $apiURI = self::DEFAULT_GATEWAY . $apiURI;//缺省网关
+            }
+            $parameters ['app_id']    = $this->appId;
+            $parameters ['timestamp'] = intval(microtime(true) * 1000);//毫秒
+            $options['verify']        = false;
+            $options["query"]         = array_merge([
                 "sign" => $this->getSign($parameters),
-            ], $parameters);
-            $response        = $client->request($method, $apiURI, $options);
+            ], $parameters);//查询字符串
+            $response                 = $client->request('GET', $apiURI, $options);
         } catch (TransferException $e) {
+            $message = sprintf("Something went wrong when calling fulu (%s).", $e->getMessage());
+            $this->logger->error($message);
+            throw new ServerException($e->getMessage(), $e->getCode(), $e);
+        } catch (GuzzleException $e) {
             $message = sprintf("Something went wrong when calling fulu (%s).", $e->getMessage());
             $this->logger->error($message);
             throw new ServerException($e->getMessage(), $e->getCode(), $e);
@@ -156,6 +93,7 @@ abstract class Client
     }
 
     /**
+     * 获取签名
      * @param array $parameters
      * @return string
      */
@@ -164,7 +102,7 @@ abstract class Client
         if (array_key_exists("sign", $parameters)) {
             unset($parameters["sign"]);
         }
-        return Sign::getSign($parameters, $this->secret);
+        return Sign::getSign($parameters, $this->appKey);
     }
 
 

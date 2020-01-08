@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Test\CQApi;
 
-
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  * @internal
  * @covers \JavaReact\CQApi\Order
  */
-class OrderTest extends TestCase
+class CouponTest extends TestCase
 {
 
 }

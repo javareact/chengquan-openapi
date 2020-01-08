@@ -1,6 +1,5 @@
 <?php
 
-
 namespace JavaReact\CQApi;
 
 /**
@@ -20,7 +19,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/order/pay", $params);
+        return $this->request("coupon/order/pay", $params);
     }
 
     /**
@@ -32,7 +31,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/order/pay", $params);
+        return $this->request("coupon/order/pay", $params);
     }
 
     /**
@@ -44,7 +43,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/type/list", $params);
+        return $this->request("coupon/type/list", $params);
     }
 
     /**
@@ -56,7 +55,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/type/goods/list", $params);
+        return $this->request("coupon/type/goods/list", $params);
     }
 
     /**
@@ -66,7 +65,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/goods/stock", $params);
+        return $this->request("coupon/goods/stock", $params);
     }
 
     /**
@@ -78,7 +77,7 @@ class CQCoupon extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/coupon/goods/notes", $params);
+        return $this->request("coupon/goods/notes", $params);
     }
 
 }

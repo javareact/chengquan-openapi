@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Test\CQApi;
 
 use Mockery;
-use phpDocumentor\Reflection\Types\Context;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 Use ReflectionMethod;
@@ -31,11 +30,9 @@ class ClientTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = new Client( Contains::TEST_APP_KEY, Contains::TEST_SECRET, function () {
-            return Mockery::mock(\GuzzleHttp\Client::class);
-        });
+        $this->client    = new Client();//fixme
         $reflectionClass = new ReflectionClass(Client::class);
-        $method = $reflectionClass->getMethod("resolveOptions");
+        $method          = $reflectionClass->getMethod("resolveOptions");
         $method->setAccessible(true);
         $this->method = $method;
     }
@@ -43,9 +40,9 @@ class ClientTest extends TestCase
     public function testResolveOptions()
     {
         $options = [
-            "foo" => "bar",
+            "foo"   => "bar",
             "hello" => "world",
-            "php" => "test",
+            "php"   => "test",
         ];
 
         $availableOptions = [

@@ -19,7 +19,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/tel/pay", $params);
+        return $this->request("order/tel/pay", $params);
     }
 
     /**
@@ -31,7 +31,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/gprs/pay", $params);
+        return $this->request("order/gprs/pay", $params);
     }
 
     /**
@@ -43,7 +43,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/oil/pay", $params);
+        return $this->request("order/oil/pay", $params);
     }
 
     /**
@@ -56,7 +56,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/qq/pay", $params);
+        return $this->request("order/qq/pay", $params);
     }
 
     /**
@@ -68,7 +68,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/video/pay", $params);
+        return $this->request("order/video/pay", $params);
     }
 
     /**
@@ -80,7 +80,7 @@ class CQOrder extends Client
     {
         $params = [
         ];
-        return $this->request("POST", "https://api.chengquan.cn/order/get", $params);
+        return $this->request("order/get", $params);
     }
 
 }
