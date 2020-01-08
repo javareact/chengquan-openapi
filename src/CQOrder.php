@@ -56,7 +56,7 @@ class CQOrder extends Client
      * 加油卡充值接口
      * @param string $order_no 商户提交的订单号，最长32位（商户保证其唯一性）
      * @param string $recharge_number 加油卡卡号，中石化：19位，中石油：16位
-     * @param int $price 充值金额，以分为单位
+     * @param int $price 充值金额，以分为单位 100,200,500,1000
      * @param string $notify_url 橙券主动通知订单结果地址
      * @return CQApiResponse
      */
