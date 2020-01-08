@@ -77,7 +77,7 @@ class CQApiResponse
      */
     public function isSuccess(bool $checkSign = true): bool
     {
-        if ($this->json("code") === 0) {
+        if ($this->json("code") === 7000) {
             if ($checkSign === true) {
                 return true;
             } else {
@@ -94,7 +94,7 @@ class CQApiResponse
      */
     public function code(): int
     {
-        return (Integer)$this->json("code", 999999); // 如果无则返回999999
+        return (Integer)$this->json("code", -1); // 如果无则返回-1
     }
 
     /**

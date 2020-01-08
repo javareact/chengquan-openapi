@@ -15,18 +15,14 @@ use Psr\Log\NullLogger;
 
 abstract class Client
 {
-    /** @var string */
+    /** @var string 默认网关 */
     const DEFAULT_GATEWAY = 'https://api.chengquan.cn/';
 
-    /**
-     * @vars string
-     */
-    protected $appId;
+    /** @var string APP_ID */
+    private $appId;
 
-    /**
-     * @var string
-     */
-    protected $appKey;
+    /** @var string APP_KEY */
+    private $appKey;
 
     /**
      * @var Closure
@@ -40,12 +36,12 @@ abstract class Client
 
     /**
      * Client constructor.
-     * @param string $app_id
-     * @param string $app_key
-     * @param Closure $clientFactory
+     * @param string $app_id APP_ID
+     * @param string $app_key APP_KEY
+     * @param Closure|null $clientFactory
      * @param LoggerInterface|null $logger
      */
-    public function __construct(string $app_id, string $app_key, Closure $clientFactory, LoggerInterface $logger = null)
+    public function __construct(string $app_id, string $app_key, Closure $clientFactory = null, LoggerInterface $logger = null)
     {
         $this->appId         = $app_id;
         $this->appKey        = $app_key;
@@ -55,9 +51,8 @@ abstract class Client
 
     /**
      * 发送请求
-     * @param string $apiURI
-     * @param array $parameters
-     * @param string $method
+     * @param string $apiURI 请求地址
+     * @param array $parameters 应用级参数
      * @return CQApiResponse
      */
     protected function request(string $apiURI, array $parameters = []): CQApiResponse
@@ -65,8 +60,12 @@ abstract class Client
         $this->logger->debug(sprintf("CQApi Request [%s] %s", 'GET', $apiURI));
         try {
             $clientFactory = $this->clientFactory;
-            /** @var ClientInterface $client */
-            $client = $clientFactory();
+            if ($clientFactory instanceof Closure) {
+                /** @var ClientInterface $client */
+                $client = $clientFactory();
+            } else {
+                $client = new \GuzzleHttp\Client;
+            }
             if (!$client instanceof ClientInterface) {
                 throw new ClientException(sprintf('The client factory should create a %s instance.', ClientInterface::class));
             }

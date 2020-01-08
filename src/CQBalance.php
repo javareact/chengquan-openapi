@@ -16,6 +16,7 @@ class CQBalance extends Client
     public function balanceGet(): CQApiResponse
     {
         $params = [
+            //无参数
         ];
         return $this->request("user/balance/get", $params);
     }
