@@ -27,7 +27,7 @@ class CouponTest extends TestCase
         $logger->pushHandler(new StdoutHandler());
         $this->coupon = new CQCoupon('666', 'mykey', function () {
             return new Client([
-                "base_uri" => \JavaReact\CQApi\Client::DEFAULT_GATEWAY,
+                "base_uri" => \JavaReact\CQApi\Client::TEST_GATEWAY,
             ]);
         }, $logger);
     }

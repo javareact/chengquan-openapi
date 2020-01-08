@@ -28,7 +28,7 @@ class OrderTest extends TestCase
         $logger->pushHandler(new StdoutHandler());
         $this->order = new CQOrder('666', 'mykey', function () {
             return new Client([
-                "base_uri" => \JavaReact\CQApi\Client::DEFAULT_GATEWAY,
+                "base_uri" => \JavaReact\CQApi\Client::TEST_GATEWAY,
             ]);
         }, $logger);
     }
