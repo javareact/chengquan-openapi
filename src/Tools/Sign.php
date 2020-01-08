@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JavaReact\CQApi;
+namespace JavaReact\CQApi\Tools;
 /**
  * 橙券签名算法
  * Class Sign

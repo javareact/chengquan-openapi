@@ -13,7 +13,8 @@
     "php": ">=7.1",
     "guzzlehttp/guzzle": "*",
     "psr/log": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-openssl": "*"
   },
   "autoload": {
     "psr-4": {

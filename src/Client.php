@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\TransferException;
 use JavaReact\CQApi\Exception\ClientException;
 use JavaReact\CQApi\Exception\ServerException;
+use JavaReact\CQApi\Tools\Sign;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 

@@ -39,7 +39,7 @@ class CQCoupon extends Client
         $params = [
             'user_order_no' => $user_order_no,
         ];
-        return $this->request("coupon/order/pay", $params);
+        return $this->request("coupon/order/query", $params);
     }
 
     /**
