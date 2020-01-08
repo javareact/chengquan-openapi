@@ -1,22 +1,24 @@
-# fulu-openapi
+# 橙券-权益营销方案服务商
+### ChengQuan-openapi
+### PHP-SDK
 
 # 1. Require with Composer
 ```
-composer require JavaReact/CQApi
+composer require javareact/cq-api
 ```
 
 # 2. Example
 ```
 use GuzzleHttp\Client;
-use JavaReact\CQApi\Order;
+use JavaReact\CQApi\CQBalance;
 
-$goods = new Goods("appKey", "secret", function() {
+$goods = new CQBalance("appKey", "secret", function() {
     return new Client([
-        "base_uri" => "https://openapi.fulu.com/api/getway",
+        "base_uri" => \JavaReact\CQApi\Client::DEFAULT_GATEWAY,//可省略
     ]);
 });
 
-$response = $goods->fuluGoodsInfoGet("productid");
+$response = $balance->balanceGet("productid");
 if($response->getStatusCode() == 200) {
     $json = $response->json();
     $result = $response->result();

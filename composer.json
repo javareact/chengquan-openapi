@@ -1,8 +1,14 @@
 {
   "name": "javareact/cq-api",
-  "description": "ChengQuan OpenApi SDK",
+  "description": "橙券PHP-SDK,ChengQuan OpenApi SDK",
   "type": "library",
   "license": "MIT",
+  "keywords": [
+    "橙券",
+    "ChengQuan",
+    "OpenApi",
+    "SDK"
+  ],
   "require": {
     "php": ">=7.1",
     "guzzlehttp/guzzle": "*",
