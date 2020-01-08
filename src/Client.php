@@ -79,13 +79,12 @@ abstract class Client
             if (empty($client->getConfig('base_uri'))) {
                 $apiURI = self::DEFAULT_GATEWAY . $apiURI;//缺省网关
             }
-            $parameters ['app_id']    = $this->appId;
-            $parameters ['timestamp'] = intval(microtime(true) * 1000);//毫秒
-            $options['verify']        = false;
-            $options["query"]         = array_merge([
-                "sign" => $this->getSign($parameters),
-            ], $parameters);//查询字符串
-            $response                 = $client->request('GET', $apiURI, $options);
+            $parameters['app_id']    = $this->appId;
+            $parameters['timestamp'] = intval(microtime(true) * 1000);//毫秒
+            $parameters['sign']      = $this->getSign($parameters);
+            $options['verify']       = false;//关闭SSL验证
+            $options["query"]        = $parameters;//查询字符串
+            $response                = $client->request('GET', $apiURI, $options);
         } catch (TransferException $e) {
             $message = sprintf("Something went wrong when calling fulu (%s).", $e->getMessage());
             $this->logger->error($message);
