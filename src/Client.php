@@ -13,6 +13,10 @@ use JavaReact\CQApi\Exception\ServerException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
+/**
+ * Class Client
+ * @package JavaReact\CQApi
+ */
 abstract class Client
 {
     /** @var string 默认网关 */

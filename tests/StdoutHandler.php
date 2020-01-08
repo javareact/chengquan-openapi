@@ -10,6 +10,10 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
+/**
+ * Class StdoutHandler
+ * @package Test\CQApi
+ */
 class StdoutHandler extends StreamHandler
 {
     const FORMAT = "[%datetime%] [%level_name%] %message% %context% %extra%\n";

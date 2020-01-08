@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Test\CQApi;
 
-use Mockery;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 Use ReflectionMethod;
