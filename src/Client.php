@@ -111,5 +111,22 @@ abstract class Client
         return Sign::getSign($parameters, $this->appKey);
     }
 
+    /**
+     * 验证签名
+     * @param array $parameters POST数组
+     * @return bool
+     */
+    public function verifySign(array $parameters)
+    {
+        if (!array_key_exists('sign', $parameters) || empty($parameters['sign'])) {
+            return false;
+        }
+        $oriSign = $parameters['sign'];
+        $newSign = $this->getSign($parameters);
+        if ($oriSign === $newSign) {
+            return true;
+        }
+        return false;
+    }
 
 }
