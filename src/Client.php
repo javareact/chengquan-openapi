@@ -24,7 +24,7 @@ abstract class Client
     const DEFAULT_GATEWAY = 'https://api.chengquan.cn/';
 
     /** @var string 测试网关 */
-    const TEST_GATEWAY = 'http://test.api.chengquan.vip:11140';
+    const TEST_GATEWAY = 'http://test.api.chengquan.vip:11140/';
 
     /** @var string APP_ID */
     private $appId;
