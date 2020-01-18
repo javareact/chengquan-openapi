@@ -62,6 +62,7 @@ abstract class Client
      * @param string $apiURI 请求地址
      * @param array $parameters 应用级参数
      * @return CQApiResponse
+     * @throws ServerException
      */
     protected function request(string $apiURI, array $parameters = []): CQApiResponse
     {
