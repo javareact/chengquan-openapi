@@ -82,7 +82,7 @@ abstract class Client
                 $apiURI = self::DEFAULT_GATEWAY . $apiURI;//缺省网关
             }
             $parameters['app_id']    = $this->appId;
-            $parameters['timestamp'] = bcmul(microtime(true), 1000, 0);//毫秒
+            $parameters['timestamp'] = bcmul(strval(microtime(true)), '1000', 0);//毫秒
             $parameters['sign']      = $this->getSign($parameters);
             $options['verify']       = false;//关闭SSL验证
             $options["query"]        = $parameters;//查询字符串
