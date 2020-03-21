@@ -94,7 +94,7 @@ class CQApiResponse
      */
     public function code(): int
     {
-        return (Integer)$this->json("code", -1); // 如果无则返回-1
+        return (int)$this->json("code", -1); // 如果无则返回-1
     }
 
     /**
