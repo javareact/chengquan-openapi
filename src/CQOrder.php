@@ -4,7 +4,7 @@
 namespace JavaReact\CQApi;
 
 /**
- * Class CQOrder 直冲接口
+ * 直冲接口
  * @package JavaReact\CQApi
  */
 class CQOrder extends Client
@@ -12,10 +12,10 @@ class CQOrder extends Client
 
     /**
      * 话费充值接口
-     * @param string $order_no 商户提交的订单号，最长32位
+     * @param string $order_no        商户提交的订单号，最长32位
      * @param string $recharge_number 手机号码
-     * @param int $price 充值面值,以分为单位
-     * @param string $notify_url 橙券主动通知订单结果地址
+     * @param int    $price           充值面值,以分为单位
+     * @param string $notify_url      橙券主动通知订单结果地址
      * @return CQApiResponse
      */
     public function telPay(string $order_no, string $recharge_number, int $price, string $notify_url = '')
@@ -30,86 +30,30 @@ class CQOrder extends Client
     }
 
     /**
-     * 流量充值接口
-     * @param string $order_no 商户提交的订单号，最长32位（商户保证其唯一性）
-     * @param string $recharge_number 手机号码
-     * @param int $gprs 充值流量值，单位：MB
-     * @param string $validity_unit 流量有效期单位，DAY表示天，MONTH表示月
-     * @param int $validity_num 流量有效期数量，数量(天/月)
-     * @param string $notify_url 橙券主动通知订单结果地址
-     * @return CQApiResponse
-     */
-    public function gprsPay(string $order_no, string $recharge_number, int $gprs, string $validity_unit, int $validity_num, string $notify_url = '')
-    {
-        $params = [
-            'order_no'        => $order_no,
-            'recharge_number' => $recharge_number,
-            'gprs'            => $gprs,
-            'validity_unit'   => $validity_unit,
-            'validity_num'    => $validity_num,
-            'notify_url'      => $notify_url,
-        ];
-        return $this->request("order/gprs/pay", $params);
-    }
-
-    /**
-     * 加油卡充值接口
-     * @param string $order_no 商户提交的订单号，最长32位（商户保证其唯一性）
-     * @param string $recharge_number 加油卡卡号，中石化：19位，中石油：16位
-     * @param int $price 充值金额，以分为单位 100,200,500,1000
-     * @param string $notify_url 橙券主动通知订单结果地址
-     * @return CQApiResponse
-     */
-    public function oilPay(string $order_no, string $recharge_number, int $price, string $notify_url = '')
-    {
-        $params = [
-            'order_no'        => $order_no,
-            'recharge_number' => $recharge_number,
-            'price'           => $price,
-            'notify_url'      => $notify_url,
-        ];
-        return $this->request("order/oil/pay", $params);
-    }
-
-    /**
-     * 腾讯业务接口
+     * 直充下单接口,开发者可通过该接口对橙券支持的所有直充产品进行充值,话费充值请使用telPay
      *
-     * @param string $order_no 商户提交的订单号，最长32位（商户保证其唯一性）
-     * @param string $recharge_number QQ号码
-     * @param int $amount 充值数量(正整数)
-     * @param int $product_id 产品编号（具体由橙券商务提供）
-     * @param string $notify_url 橙券主动通知订单结果地址
+     * @param string $order_no          商户提交的订单号，最长32位（商户保证其唯一性）
+     * @param string $recharge_number   充值账号
+     * @param int    $product_id        产品编号（具体由橙券商务提供）
+     * @param int    $amount            充值数量（加油卡，视频业务默认为1，其它业务按照实际情况传递）。数量范围1-99999,目前均为1笔
+     * @param string $ip                充值ip（仅腾讯业务需要，根据实际情况进行传递）
+     * @param string $oil_phone_account 加油卡充值时用户的手机号
+     * @param string $notify_url        橙券主动通知订单结果地址
      * @return CQApiResponse
      */
-    public function qqPay(string $order_no, string $recharge_number, int $amount, int $product_id, string $notify_url = '')
+    public function directCharge(string $order_no, string $recharge_number, int $product_id, int $amount = 1, string $ip = '', $oil_phone_account = '', string $notify_url = '')
     {
         $params = [
-            'order_no'        => $order_no,
-            'recharge_number' => $recharge_number,
-            'amount'          => $amount,
-            'product_id'      => $product_id,
-            'notify_url'      => $notify_url,
+            'order_no'          => $order_no,
+            'recharge_number'   => $recharge_number,
+            'product_id'        => $product_id,
+            'amount'            => $amount,
+            'ip'                => $ip,
+            'oil_phone_account' => $oil_phone_account,
+            'notify_url'        => $notify_url,
+            'version'           => '1.1.0',//目前固定
         ];
-        return $this->request("order/qq/pay", $params);
-    }
-
-    /**
-     * 视频充值接口
-     * @param string $order_no 商户提交的订单号，最长32位（商户保证其唯一性）
-     * @param string $recharge_number 账号
-     * @param int $product_id 产品编号（具体由橙券商务提供）
-     * @param string $notify_url 橙券主动通知订单结果地址
-     * @return CQApiResponse
-     */
-    public function videoPay(string $order_no, string $recharge_number, int $product_id, string $notify_url = '')
-    {
-        $params = [
-            'order_no'        => $order_no,
-            'recharge_number' => $recharge_number,
-            'product_id'      => $product_id,
-            'notify_url'      => $notify_url,
-        ];
-        return $this->request("order/video/pay", $params);
+        return $this->request("order/directCharge", $params);
     }
 
     /**

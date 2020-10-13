@@ -48,7 +48,7 @@ class CQApiResponse
     /**
      * 响应转换为数组
      * @param string|null $key
-     * @param mixed|null $default
+     * @param mixed|null  $default
      * @return mixed|mixed
      */
     public function json(string $key = null, $default = null)

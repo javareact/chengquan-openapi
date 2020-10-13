@@ -3,19 +3,18 @@
 namespace JavaReact\CQApi;
 
 /**
- * Class CQCoupon 卡券接口
+ * 卡券接口
  * @package JavaReact\CQApi
  */
 class CQCoupon extends Client
 {
-
     /**
      * 商户购买卡劵接口
      *
      * @param string $user_order_no 商户提交的订单号，最长32位（商户保证其唯一性）
-     * @param string $goods_no 产品编号（具体由橙券商务提供）
-     * @param int $count 购买数量（只能为正整数，最大等于50）
-     * @param string $mobile 接受卡密短信手机号(选填)
+     * @param string $goods_no      产品编号（具体由橙券商务提供）
+     * @param int    $count         购买数量（只能为正整数，最大等于50）
+     * @param string $mobile        接受卡密短信手机号(选填)
      * @return CQApiResponse
      */
     public function orderPay(string $user_order_no, string $goods_no, int $count, string $mobile = '')
