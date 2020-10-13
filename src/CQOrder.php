@@ -36,7 +36,7 @@ class CQOrder extends Client
      * @param string $recharge_number   充值账号
      * @param int    $product_id        产品编号（具体由橙券商务提供）
      * @param int    $amount            充值数量（加油卡，视频业务默认为1，其它业务按照实际情况传递）。数量范围1-99999,目前均为1笔
-     * @param string $ip                充值ip（仅腾讯业务需要，根据实际情况进行传递）
+     * @param string $ip                充值ip（仅腾讯业务需要，根据实际情况进行传递）,传空会报错
      * @param string $oil_phone_account 加油卡充值时用户的手机号
      * @param string $notify_url        橙券主动通知订单结果地址
      * @return CQApiResponse
@@ -48,11 +48,16 @@ class CQOrder extends Client
             'recharge_number'   => $recharge_number,
             'product_id'        => $product_id,
             'amount'            => $amount,
-            'ip'                => $ip,
             'oil_phone_account' => $oil_phone_account,
             'notify_url'        => $notify_url,
             'version'           => '1.1.0',//目前固定
         ];
+        if ($ip && filter_var($ip, FILTER_VALIDATE_IP)) {
+            $params['ip'] = $ip;//传空或者格式不正确会报参数错误
+        }
+        if ($oil_phone_account) {
+            $params['oil_phone_account'] = $oil_phone_account;
+        }
         return $this->request("order/directCharge", $params);
     }
 
